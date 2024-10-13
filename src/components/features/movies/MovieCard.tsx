@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-interface MovieCardItem {
+export interface MovieCardItem {
   id: number;
   poster_path: string;
   title: string;

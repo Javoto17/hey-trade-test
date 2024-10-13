@@ -13,8 +13,8 @@ export function useGetMovieDetail(id: number) {
       return await getMovieDetail(moviesRepository)(id);
     },
     enabled: !!id,
-    retry: 3,
-    retryDelay: 1500,
+    retry: 10,
+    retryDelay: 5000,
   });
 
   return {

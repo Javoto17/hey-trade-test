@@ -24,7 +24,7 @@ async function get<T>(url: string, options: RequestInit = {}): Promise<T> {
 
   const response = await fetch(url, fetchOptions);
 
-  if (!response.ok) {
+  if (response.status !== 200) {
     throw new Error(`Error fetching data: ${response.statusText}`);
   }
 

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
 
 import MovieList from '@/src/components/features/movies/MoviesList';
 import { HomeScreenProps } from '@/src/components/features/navigation/Navigation';
 import Layout from '@/src/components/features/shared/Layout';
 
-import { useGetMovies } from '@/src/hooks/useGetMovies';
+import { useGetMoviesPagination } from '@/src/hooks/useGetMoviesPagination';
+import { MovieCardItem } from '@/src/components/features/movies/MovieCard';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
-  const { data, isError, isLoading } = useGetMovies();
+  const { data, isError, fetchNextPage, isFetching, hasNextPage } =
+    useGetMoviesPagination();
 
   const onPressItem = (id: number) => {
     navigation.navigate('Detail', {
@@ -16,7 +18,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
     });
   };
 
-  if (isError || !data) {
+  const onEndReached = useCallback(() => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage]);
+
+  if (isError || (!data && !isFetching)) {
     return (
       <Layout>
         <View>
@@ -28,7 +36,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
 
   return (
     <Layout>
-      <MovieList data={data} isLoading={isLoading} onPressItem={onPressItem} />
+      <MovieList
+        data={data as MovieCardItem[]}
+        isLoading={isFetching}
+        onPressItem={onPressItem}
+        onEndReached={onEndReached}
+      />
     </Layout>
   );
 };
