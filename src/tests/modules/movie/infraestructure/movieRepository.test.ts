@@ -26,4 +26,19 @@ describe('Movies Repository Test Integration', () => {
 
     expect(movieDetail).toBeNull();
   });
+
+  it('Should obtain a list of movies by pagination', async () => {
+    let page = 1;
+
+    const dataPage1 = await moviesRepository.getTrendingMoviesPagination(page);
+
+    expect(dataPage1?.results?.length).toBeGreaterThan(0);
+
+    page = 2;
+    const dataPage2 = await moviesRepository.getTrendingMoviesPagination(page);
+
+    expect(dataPage2?.results?.length).toBeGreaterThan(0);
+
+    expect(dataPage1.results).not.toEqual(dataPage2.results);
+  });
 });

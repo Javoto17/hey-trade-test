@@ -2,11 +2,11 @@ import React from 'react';
 
 import App from '@/src/App';
 import { useGetMovieDetail } from '@/src/hooks/useGetMovieDetail';
-import { useGetMovies } from '@/src/hooks/useGetMovies';
+import { useGetMoviesPagination } from '@/src/hooks/useGetMoviesPagination';
 import { fireEvent, render } from '@testing-library/react-native';
 
-jest.mock('@/src/hooks/useGetMovies', () => ({
-  useGetMovies: jest.fn(),
+jest.mock('@/src/hooks/useGetMoviesPagination', () => ({
+  useGetMoviesPagination: jest.fn(),
 }));
 
 jest.mock(
@@ -26,9 +26,9 @@ const mockDetail = {
 describe('MovieListScreen', () => {
   it('Should navigate to movie detail screen when a movie is selected', async () => {
     // Mock hooks
-    (useGetMovies as jest.Mock).mockReturnValue({
+    (useGetMoviesPagination as jest.Mock).mockReturnValue({
       data: [mockDetail],
-      isLoading: false,
+      isFetching: false,
       isError: false,
     });
 

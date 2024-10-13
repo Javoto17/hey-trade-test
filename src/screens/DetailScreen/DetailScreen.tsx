@@ -19,9 +19,9 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
 
   const { data, isError, isLoading } = useGetMovieDetail(id);
 
-  if (isError || !data) {
+  if (isError || (!data && !isLoading)) {
     return (
-      <Layout>
+      <Layout withHeader>
         <View style={styles.container}>
           <View style={styles.wrapperErrorMessage}>
             <Text>Ups.. Something wrong happens</Text>
@@ -42,7 +42,10 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
           source={`https://image.tmdb.org/t/p/w500${data?.backdrop_path}`}
         />
 
-        <MovieTitle title={data?.title} tagline={data?.tagline} />
+        <MovieTitle
+          title={data?.title as string}
+          tagline={data?.tagline as string}
+        />
         {data?.overview && <MovieOverview overview={data?.overview} />}
         {data?.genres && <TagList tags={data?.genres ?? []} title="Gender" />}
         {data?.production_companies &&
