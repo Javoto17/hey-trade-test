@@ -6,10 +6,12 @@ import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
+import FavoritesScreen from '@/src/screens/FavoritesScreen/FavoritesScreen';
 
 export type RootStackParamList = {
   Home: undefined;
   Detail: { id: number };
+  Favorites: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -24,18 +26,18 @@ export type DetailScreenProps = NativeStackScreenProps<
   'Detail'
 >;
 
+export type FavoritesScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Favorites'
+>;
+
 export const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Detail" component={DetailScreen} />
+        <Stack.Screen name="Favorites" component={FavoritesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,9 +1,14 @@
 import { generateMoviesRepository } from '@/src/modules/movies/infrastructure/MovieRepository';
 import { generateClientRepository } from '@/src/modules/client/infrastructure/ClientRepository';
+import { generateStorageRepository } from '@/src/modules/storage/infrastructure/StorageRepository';
 
 describe('Movies Repository Test Integration', () => {
   const clientRepository = generateClientRepository();
-  const moviesRepository = generateMoviesRepository(clientRepository);
+  const storageRepository = generateStorageRepository();
+  const moviesRepository = generateMoviesRepository(
+    clientRepository,
+    storageRepository
+  );
 
   it('Should obtain a list of movies', async () => {
     const data = await moviesRepository.getTrendingMovies();
@@ -40,5 +45,31 @@ describe('Movies Repository Test Integration', () => {
     expect(dataPage2?.results?.length).toBeGreaterThan(0);
 
     expect(dataPage1.results).not.toEqual(dataPage2.results);
+  });
+
+  it('Set movie favorite', async () => {
+    const mockMovie = {
+      title: 'Inception',
+      id: 1,
+    };
+
+    await moviesRepository.saveFavorite(mockMovie);
+
+    const isFavorite = await moviesRepository.getIsFavorite(mockMovie?.id);
+
+    expect(isFavorite).toBeTruthy();
+  });
+
+  it('Remove movie favorite', async () => {
+    const mockMovie = {
+      title: 'Inception',
+      id: 1,
+    };
+
+    await moviesRepository.removeFavorite(mockMovie?.id);
+
+    const isFavorite = await moviesRepository.getIsFavorite(mockMovie?.id);
+
+    expect(isFavorite).toBeFalsy();
   });
 });

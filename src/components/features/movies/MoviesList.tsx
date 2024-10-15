@@ -9,6 +9,8 @@ type MovieListProps = {
   isLoading: boolean;
   onPressItem: (id: number) => void;
   onEndReached?: () => void;
+  isRefetching?: boolean;
+  onRefresh?: () => void;
 };
 
 const MovieList: React.FC<MovieListProps> = ({
@@ -16,6 +18,8 @@ const MovieList: React.FC<MovieListProps> = ({
   isLoading,
   onPressItem,
   onEndReached,
+  onRefresh,
+  isRefetching = false,
 }) => {
   const renderFooter = () => {
     if (!isLoading) return null;
@@ -25,10 +29,19 @@ const MovieList: React.FC<MovieListProps> = ({
   return (
     <FlatList
       data={data}
+      extraData={data}
       keyExtractor={(item) => item?.id?.toString()}
       renderItem={({ item }) => (
         <MovieCard movie={item} onPress={onPressItem} />
       )}
+      {...(typeof onRefresh === 'function' && {
+        refreshing: isRefetching,
+        onRefresh: () => {
+          if (typeof onRefresh === 'function') {
+            onRefresh();
+          }
+        },
+      })}
       ListFooterComponent={renderFooter}
       {...(typeof onEndReached === 'function' && {
         onEndReachedThreshold: 0.35,

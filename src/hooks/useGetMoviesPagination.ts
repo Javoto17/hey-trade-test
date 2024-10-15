@@ -3,14 +3,16 @@ import { useCallback, useMemo, useState } from 'react';
 import { generateClientRepository } from '@/src/modules/client/infrastructure/ClientRepository';
 import { getMoviesPagination } from '@/src/modules/movies/application/get/getMoviesPagination';
 import { generateMoviesRepository } from '@/src/modules/movies/infrastructure/MovieRepository';
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useQuery,
-} from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { generateStorageRepository } from '../modules/storage/infrastructure/StorageRepository';
 
 const clientRepository = generateClientRepository();
-const moviesRepository = generateMoviesRepository(clientRepository);
+const storageRepository = generateStorageRepository();
+const moviesRepository = generateMoviesRepository(
+  clientRepository,
+  storageRepository
+);
 
 export function useGetMoviesPagination() {
   const {

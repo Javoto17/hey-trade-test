@@ -1,22 +1,37 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import ButtonIcon, { ButtonIconProps } from '../shared/ButtonIcon';
 
-const MovieTitle: React.FC<{ title: string; tagline: string }> = ({
+interface MovieHeaderProps {
+  title: string;
+  tagline: string;
+  favoriteBtn?: ButtonIconProps;
+}
+
+const MovieHeader: React.FC<MovieHeaderProps> = ({
   title,
   tagline,
+  favoriteBtn,
 }) => (
   <View style={styles.titleSection}>
-    <Text style={styles.title}>{title}</Text>
-    {tagline ? <Text style={styles.tagline}>{tagline}</Text> : null}
+    <View>
+      <Text style={styles.title}>{title}</Text>
+      {tagline ? <Text style={styles.tagline}>{tagline}</Text> : null}
+    </View>
+    {favoriteBtn && (
+      <ButtonIcon {...favoriteBtn} onPress={favoriteBtn?.onPress} />
+    )}
   </View>
 );
 
-export default MovieTitle;
+export default MovieHeader;
 
 const styles = StyleSheet.create({
   titleSection: {
+    flexDirection: 'row',
     padding: 16,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 24,
