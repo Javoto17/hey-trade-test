@@ -6,18 +6,20 @@ import MovieOverview from '@/src/components/features/movieDetail/MovieOverview';
 import MovieProductionCompanies from '@/src/components/features/movieDetail/MovieProductionCompanies';
 import MovieTitle from '@/src/components/features/movieDetail/MovieTitle';
 import { DetailScreenProps } from '@/src/components/features/navigation/Navigation';
-
 import BackdropImage from '@/src/components/features/shared/BackdropImage';
 import Layout from '@/src/components/features/shared/Layout';
+import Spinner from '@/src/components/features/shared/Spinner';
 import TagList from '@/src/components/features/shared/TagList';
 
 import { useGetMovieDetail } from '@/src/hooks/useGetMovieDetail';
-import Spinner from '@/src/components/features/shared/Spinner';
+import { useToggleFavorite } from '@/src/hooks/useToggleFavorite';
+import { Movie } from '@/src/modules/movies/domain/Movie';
 
 const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
   const { id } = route?.params;
 
   const { data, isError, isLoading } = useGetMovieDetail(id);
+  const { isFavorite, remove, save, isFetching } = useToggleFavorite(id);
 
   if (isError || (!data && !isLoading)) {
     return (
@@ -35,17 +37,27 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
     return <Spinner />;
   }
 
+  const handlePressFavorite = (movie: Movie) => {
+    isFavorite ? remove(movie?.id) : save(movie);
+  };
+
   return (
     <Layout withHeader>
       <ScrollView style={styles.container}>
         <BackdropImage
-          source={`https://image.tmdb.org/t/p/w500${data?.backdrop_path}`}
+          source={`https://image.tmdb.org/t/p/w500${data?.poster_path}`}
         />
 
         <MovieTitle
           title={data?.title as string}
           tagline={data?.tagline as string}
+          favoriteBtn={{
+            onPress: () => handlePressFavorite(data as Movie),
+            icon: 'bookmark',
+            color: isFavorite ? '#ffd60a' : undefined,
+          }}
         />
+
         {data?.overview && <MovieOverview overview={data?.overview} />}
         {data?.genres && <TagList tags={data?.genres ?? []} title="Gender" />}
         {data?.production_companies &&

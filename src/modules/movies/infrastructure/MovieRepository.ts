@@ -3,6 +3,7 @@ import { MovieRepository } from '../domain/MovieRepository';
 import { Movie } from '../domain/Movie';
 import { MovieDetail } from '../domain/MovieDetail';
 import { MoviePagination } from '../domain/MoviePagination';
+import { StorageRepository } from '../../storage/domain/StorageRepository';
 
 interface GetTrendingMoviesResponse {
   page: number;
@@ -15,7 +16,8 @@ interface GetTrendingMoviesPaginationResponse {
 }
 
 export function generateMoviesRepository(
-  clientRepository: ClientRepository
+  clientRepository: ClientRepository,
+  storageRepository: StorageRepository
 ): MovieRepository {
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -70,6 +72,43 @@ export function generateMoviesRepository(
           nextCursor: null,
         };
       }
+    },
+    saveFavorite: async (movie: Movie) => {
+      const prevFavorites =
+        (await storageRepository.get<Movie[]>('list')) ?? [];
+
+      const hasPreviously = prevFavorites.some(
+        (item) => item?.id === movie?.id
+      );
+
+      if (hasPreviously) {
+        return;
+      }
+
+      prevFavorites.push(movie);
+
+      storageRepository.set('list', prevFavorites);
+    },
+    removeFavorite: async (movieId: number) => {
+      let prevFavorites = (await storageRepository.get<Movie[]>('list')) ?? [];
+
+      prevFavorites = prevFavorites.filter((item) => item?.id !== movieId);
+
+      storageRepository.set('list', prevFavorites);
+    },
+    getIsFavorite: async (movieId: number): Promise<boolean> => {
+      const prevFavorites =
+        (await storageRepository.get<Movie[]>('list')) ?? [];
+
+      const isFavorite =
+        prevFavorites.findIndex((item) => item?.id === movieId) !== -1;
+
+      return isFavorite;
+    },
+    getAllFavorites: async (): Promise<Movie[]> => {
+      const favorites = (await storageRepository.get<Movie[]>('list')) ?? [];
+
+      return favorites;
     },
   };
 }

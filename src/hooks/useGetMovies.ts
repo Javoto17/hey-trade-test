@@ -1,10 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { getMovies } from '@/src/modules/movies/application/get/getMovies';
 import { generateClientRepository } from '@/src/modules/client/infrastructure/ClientRepository';
+import { getMovies } from '@/src/modules/movies/application/get/getMovies';
 import { generateMoviesRepository } from '@/src/modules/movies/infrastructure/MovieRepository';
+import { generateStorageRepository } from '@/src/modules/storage/infrastructure/StorageRepository';
+import { useQuery } from '@tanstack/react-query';
 
 const clientRepository = generateClientRepository();
-const moviesRepository = generateMoviesRepository(clientRepository);
+const storageRepository = generateStorageRepository();
+const moviesRepository = generateMoviesRepository(
+  clientRepository,
+  storageRepository
+);
 
 export function useGetMovies() {
   const { data, isLoading, isSuccess, isError } = useQuery({

@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 interface MovieAdditionalInfoProps {
-  releaseDate: string;
-  runtime: number;
-  budget: number;
-  revenue: number;
+  releaseDate?: string;
+  runtime?: number;
+  budget?: number;
+  revenue?: number;
 }
 
 const MovieAdditionalInfo: React.FC<MovieAdditionalInfoProps> = ({
@@ -18,8 +18,8 @@ const MovieAdditionalInfo: React.FC<MovieAdditionalInfoProps> = ({
     <Text style={styles.heading}>Additional Info</Text>
     <Text>Release Date: {releaseDate}</Text>
     <Text>Runtime: {runtime} minutes</Text>
-    <Text>Budget: ${budget.toLocaleString()}</Text>
-    <Text>Revenue: ${revenue.toLocaleString()}</Text>
+    <Text>Budget: ${budget?.toLocaleString()}</Text>
+    <Text>Revenue: ${revenue?.toLocaleString()}</Text>
   </View>
 );
 
