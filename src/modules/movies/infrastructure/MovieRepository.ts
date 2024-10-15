@@ -15,6 +15,12 @@ interface GetTrendingMoviesPaginationResponse {
   total_pages: number;
 }
 
+interface GetSearchMoviesPaginationResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+}
+
 export function generateMoviesRepository(
   clientRepository: ClientRepository,
   storageRepository: StorageRepository
@@ -62,7 +68,35 @@ export function generateMoviesRepository(
         return {
           page: data?.page,
           results: data?.results,
-          nextCursor: data?.page <= data?.total_pages ? data?.page + 1 : null,
+          nextCursor: data?.page < data?.total_pages ? data?.page + 1 : null,
+        };
+      } catch (error) {
+        console.log(error);
+        return {
+          page: 0,
+          results: [],
+          nextCursor: null,
+        };
+      }
+    },
+    searchMoviesPagination: async (
+      query,
+      page = 1,
+      locale = 'es-ES'
+    ): Promise<MoviePagination> => {
+      try {
+        const data =
+          await clientRepository.get<GetSearchMoviesPaginationResponse>(
+            API_URL +
+              `search/movie?include_adult=true&${locale}&page=${page}&query=${encodeURIComponent(query)}`
+          );
+
+        console.log(data);
+
+        return {
+          page: data?.page,
+          results: data?.results,
+          nextCursor: data?.page < data?.total_pages ? data?.page + 1 : null,
         };
       } catch (error) {
         console.log(error);
