@@ -91,8 +91,6 @@ export function generateMoviesRepository(
               `search/movie?include_adult=true&${locale}&page=${page}&query=${encodeURIComponent(query)}`
           );
 
-        console.log(data);
-
         return {
           page: data?.page,
           results: data?.results,
