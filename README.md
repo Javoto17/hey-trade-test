@@ -7,12 +7,15 @@ Este proyecto es una aplicación móvil desarrollada en **React Native** que per
 
 ## Features
 
-- **Lista de Películas**: Explora un catálogo de películas con información detallada.
-- **Favoritos**: Añade o quita películas de la lista de favoritos. El estado de cada película favorita se gestiona a través de mutaciones con **React Query**.
-- **Página de Detalles de Película**: Visualiza información detallada sobre una película seleccionada.
-- **Scroll infinito**: Para la paginación se ha optado por ir cargando las páginas de resultados según se hace scroll
-- **Tests de integración**
-- **Tests de unitarios**
+- [x] **Lista de Películas**: Explora un catálogo de películas con información detallada.
+- [x] **Favoritos**: Añade o quita películas de la lista de favoritos. El estado de cada película favorita se gestiona a través de mutaciones con **React Query**.
+- [x] **Página de Detalles de Película**: Visualiza información detallada sobre una película seleccionada.
+- [x] **Scroll infinito**: Para la paginación se ha optado por ir cargando las páginas de resultados según se hace scroll, usando `useInfiniteQuery`
+- [x] **Búsqueda de películas**
+- [x] **Tests de integración**
+- [x] **Tests de unitarios**
+- [ ] **Detalles de Actores**
+- [ ]  **Categorías**
 
 
 
