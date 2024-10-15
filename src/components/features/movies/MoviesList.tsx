@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { FlatList, View, FlatListProps } from 'react-native';
+import { FlatList } from 'react-native';
 
 import MovieCard, { MovieCardItem } from './MovieCard';
 import Spinner from '../shared/Spinner';
@@ -12,9 +12,12 @@ type MovieListProps = {
   isRefetching?: boolean;
   onRefresh?: () => void;
   header?: React.ReactNode;
+  empty?: React.ReactNode;
 };
 
-const MovieList = forwardRef<FlatList, MovieListProps>(
+export type MovieListRef = FlatList;
+
+const MovieList = forwardRef<MovieListRef, MovieListProps>(
   (
     {
       data,
@@ -24,6 +27,7 @@ const MovieList = forwardRef<FlatList, MovieListProps>(
       onRefresh,
       isRefetching = false,
       header = null,
+      empty = null,
     },
     ref
   ) => {
@@ -34,9 +38,14 @@ const MovieList = forwardRef<FlatList, MovieListProps>(
 
     return (
       <FlatList
+        contentContainerStyle={{ flexGrow: 1 }}
         ref={ref}
         data={data}
         extraData={data}
+        ListFooterComponentStyle={{
+          flexGrow: 1,
+        }}
+        ListEmptyComponent={React.isValidElement(empty) ? empty : null}
         ListHeaderComponent={React.isValidElement(header) ? header : null}
         keyExtractor={(item) => item?.id?.toString()}
         renderItem={({ item }) => (

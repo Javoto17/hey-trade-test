@@ -31,14 +31,13 @@ export function useSearchMovies(query?: string) {
     initialPageParam: 1,
     getNextPageParam: (lastPage, prop) => {
       if (lastPage?.nextCursor) return lastPage?.nextCursor;
-      return 1;
+      return null;
     },
     select: (data) => {
       return data.pages.flatMap((page) => page?.results);
     },
-    retry: 3,
-    retryDelay: 1500,
     enabled: !!query,
+    retryDelay: 5000,
   });
 
   return {

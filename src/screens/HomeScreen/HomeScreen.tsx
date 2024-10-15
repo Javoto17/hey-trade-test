@@ -1,3 +1,4 @@
+import debounce from 'just-debounce-it';
 import React, {
   useCallback,
   useEffect,
@@ -5,19 +6,21 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList } from 'react-native';
 
-import MovieList from '@/src/components/features/movies/MoviesList';
+import { MovieCardItem } from '@/src/components/features/movies/MovieCard';
 import { HomeScreenProps } from '@/src/components/features/navigation/Navigation';
+
+import MovieFilter from '@/src/components/features/movies/MovieFilter';
+import MovieList, {
+  MovieListRef,
+} from '@/src/components/features/movies/MoviesList';
+import ButtonIcon from '@/src/components/features/shared/ButtonIcon';
+import EmptyList from '@/src/components/features/shared/EmptyList';
 import Layout from '@/src/components/features/shared/Layout';
 
 import { useGetMoviesPagination } from '@/src/hooks/useGetMoviesPagination';
-import { MovieCardItem } from '@/src/components/features/movies/MovieCard';
-import ButtonIcon from '@/src/components/features/shared/ButtonIcon';
-import MovieFilter from '@/src/components/features/movies/MovieFilter';
 import { useSearchMovies } from '@/src/hooks/useSearchMovies';
-
-import debounce from 'just-debounce-it';
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
   const [text, setText] = useState<string>();
@@ -25,7 +28,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
   const { data, isError, fetchNextPage, isFetching, hasNextPage } =
     useGetMoviesPagination();
 
-  const refList = useRef<FlatList>(null);
+  const refList = useRef<MovieListRef>(null);
 
   const {
     data: searchResults,
@@ -67,9 +70,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
   if (isError || (!data && !isFetching)) {
     return (
       <Layout>
-        <View>
-          <Text>Ups.. Something wrong happens</Text>
-        </View>
+        <EmptyList text="Ups.. Something wrong happens" />
       </Layout>
     );
   }
@@ -88,15 +89,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, route }) => {
     return text ? searchResults : data;
   }, [text, searchResults, data]);
 
+  const thisLoading = useMemo(() => {
+    return isFetching || isLoadingResults;
+  }, [isFetching, isLoadingResults]);
+
   return (
     <Layout withHeader>
       <MovieFilter onChange={debounceHandleChange} value={text} />
       <MovieList
         ref={refList}
         data={thisData as MovieCardItem[]}
-        isLoading={isFetching || isLoadingResults}
+        isLoading={thisLoading}
         onPressItem={onPressItem}
-        onEndReached={onEndReached}
+        onEndReached={
+          thisData && thisData?.length > 0 ? onEndReached : undefined
+        }
+        empty={
+          text &&
+          !thisLoading && <EmptyList text={`No hay resultados para ${text}`} />
+        }
       />
     </Layout>
   );
