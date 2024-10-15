@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# **Hey Trade Test**
 
-## Get started
+## Resumen del Proyecto
 
-1. Install dependencies
+Este proyecto es una aplicación móvil desarrollada en **React Native** que permite a los usuarios explorar una lista de películas, añadir o quitar películas de su lista de favoritos, y visualizar los detalles de cada película. Además, cuenta con una implementación eficiente del manejo de estado de las llamadas utilizando **React Query** .
 
-   ```bash
-   npm install
-   ```
+## Features
 
-2. Start the app
+- **Lista de Películas**: Explora un catálogo de películas con información detallada.
+- **Favoritos**: Añade o quita películas de la lista de favoritos. El estado de cada película favorita se gestiona a través de mutaciones con **React Query**.
+- **Página de Detalles de Película**: Visualiza información detallada sobre una película seleccionada.
+- **Scroll infinito**: Para la paginación se ha optado por ir cargando las páginas de resultados según se hace scroll
+- **Tests de integración**
+- **Tests de unitarios**
 
-   ```bash
-    npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Instalación
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+1. Clona el repositorio:
 
 ```bash
-npm run reset-project
+git clone https://github.com/Javoto17/hey-trade-test.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Navega al directorio del proyecto:
 
-## Learn more
+```bash
+cd hey-trade-test
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Instala las dependencias:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm install
+```
 
-## Join the community
+## Configuración del Entorno
 
-Join our community of developers creating universal apps.
+1. Crea un archivo `.env` en la raíz del proyecto.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+2. Añade las siguientes variables de entorno (modifica según sea necesario):
+
+```bash
+EXPO_PUBLIC_API_URL="https://api.themoviedb.org/3/"
+EXPO_PUBLIC_API_TOKEN=tu-api-key
+```
+
+3. Ejecuta la aplicación en modo de desarrollo:
+
+```bash
+npm run start
+```
