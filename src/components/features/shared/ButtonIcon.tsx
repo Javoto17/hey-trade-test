@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 export interface ButtonIconProps extends TouchableOpacityProps {
   color?: string;
-  icon: 'bookmark' | 'bookmarks';
+  icon: 'bookmark' | 'bookmarks' | 'close-circle-sharp';
 }
 
 const ButtonIcon: React.FC<ButtonIconProps> = ({

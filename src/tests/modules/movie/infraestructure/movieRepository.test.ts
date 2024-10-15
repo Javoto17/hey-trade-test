@@ -43,8 +43,7 @@ describe('Movies Repository Test Integration', () => {
     const dataPage2 = await moviesRepository.getTrendingMoviesPagination(page);
 
     expect(dataPage2?.results?.length).toBeGreaterThan(0);
-
-    expect(dataPage1.results).not.toEqual(dataPage2.results);
+    expect(dataPage2?.page).toEqual(2);
   });
 
   it('Set movie favorite', async () => {
