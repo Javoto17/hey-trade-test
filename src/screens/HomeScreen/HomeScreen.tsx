@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { FlatList } from 'react-native';
 
 import { MovieCardItem } from '@/src/components/features/movies/MovieCard';
 import { HomeScreenProps } from '@/src/components/features/navigation/Navigation';
